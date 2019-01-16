@@ -12,9 +12,9 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 from PIL import Image
-from imutils import paths
+import paths
 import numpy as np
 import argparse
 import os
@@ -51,6 +51,7 @@ models = {
 	"mlp": MLPClassifier()
 }
 
+
 # grab all image paths in the input dataset directory, initialize our
 # list of extracted features and corresponding labels
 print("[INFO] extracting image features...")
@@ -71,6 +72,9 @@ for imagePath in imagePaths:
 	label = imagePath.split(os.path.sep)[-2]
 	labels.append(label)
 
+# when you get here
+# every row in the data array is
+
 # encode the labels, converting them from strings to integers
 le = LabelEncoder()
 labels = le.fit_transform(labels)
@@ -80,13 +84,19 @@ labels = le.fit_transform(labels)
 (trainX, testX, trainY, testY) = train_test_split(data, labels,
 	test_size=0.25)
 
+model_name = args["model"]
 # train the model
 print("[INFO] using '{}' model".format(args["model"]))
-model = models[args["model"]]
+model = models[model_name]
 model.fit(trainX, trainY)
 
 # make predictions on our data and show a classification report
 print("[INFO] evaluating...")
 predictions = model.predict(testX)
-print(classification_report(testY, predictions,
-	target_names=le.classes_))
+accuracy = accuracy_score(testY, predictions)
+class_report = classification_report(testY, predictions,
+	target_names=le.classes_)
+
+print(f'Model: {model_name}')
+print(f'Accuracy: {accuracy}')
+print(f'Classification Report:\n{class_report}')
