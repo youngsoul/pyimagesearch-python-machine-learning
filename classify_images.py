@@ -32,7 +32,6 @@ def extract_color_stats(image):
     # return our set of features
     return features
 
-
 """
 --dataset /Users/patrickryan/Development/python/mygithub/pyimagesearch-python-machine-learning/3scenes
 
@@ -56,14 +55,15 @@ models = {
     "logit": LogisticRegression(solver="lbfgs", multi_class="auto"),
     "svm": SVC(kernel="linear"),
     "decision_tree": DecisionTreeClassifier(),
-    "random_forest": RandomForestClassifier(n_estimators=100),
+    "random_forest": RandomForestClassifier(n_estimators=100, criterion='gini', min_samples_leaf=4),
     "mlp": MLPClassifier()
 }
 
+dataset = args["dataset"]
 # grab all image paths in the input dataset directory, initialize our
 # list of extracted features and corresponding labels
-print("[INFO] extracting image features...")
-imagePaths = paths.list_images(args["dataset"])
+print(f"[INFO] extracting image features from dataset: [{dataset}]...")
+imagePaths = paths.list_images(dataset)
 data = []
 labels = []
 
@@ -71,18 +71,18 @@ labels = []
 for imagePath in imagePaths:
     # load the input image from disk, compute color channel
     # statistics, and then update our data list
-    image = Image.open(imagePath)
+    # image = Image.open(imagePath)
 
     # using color stats does help along with rgbhisto
-    features = extract_color_stats(image)
+    # features = extract_color_stats(image)
+    # data.append(features)
 
     # Depending upon the algorithm, using the histogram is helpful
     # check out mlp with and without histogram
     # check out random forest with and without
-    histo = rgbHisto.read_describe(imagePath)
-    features.extend(histo.tolist())
+    cv2_features = rgbHisto.get_features(imagePath)
+    data.append(cv2_features)
 
-    data.append(features)
 
     # extract the class label from the file path and update the
     # labels list
@@ -106,6 +106,8 @@ model_name = args["model"]
 print("[INFO] using '{}' model".format(args["model"]))
 model = models[model_name]
 model.fit(trainX, trainY)
+
+print(f'Model: \n {model}')
 
 # make predictions on our data and show a classification report
 print("[INFO] evaluating...")
