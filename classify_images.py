@@ -18,6 +18,8 @@ import paths
 import numpy as np
 import argparse
 import os
+from rgbhistogram import RGBHistogram
+
 
 def extract_color_stats(image):
 	# split the input image into its respective RGB color channels
@@ -30,6 +32,10 @@ def extract_color_stats(image):
 	# return our set of features
 	return features
 
+"""
+--dataset /Users/patrickryan/Development/python/mygithub/pyimagesearch-python-machine-learning/3scenes
+
+"""
 # construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", type=str, default="3scenes",
@@ -37,6 +43,9 @@ ap.add_argument("-d", "--dataset", type=str, default="3scenes",
 ap.add_argument("-m", "--model", type=str, default="knn",
 	help="type of python machine learning model to use")
 args = vars(ap.parse_args())
+
+rgbHisto = RGBHistogram([8,8,8])
+
 
 # define the dictionary of models our script can use, where the key
 # to the dictionary is the name of the model (supplied via command
@@ -64,7 +73,16 @@ for imagePath in imagePaths:
 	# load the input image from disk, compute color channel
 	# statistics, and then update our data list
 	image = Image.open(imagePath)
+
+	# using color stats does help along with rgbhisto
 	features = extract_color_stats(image)
+
+	# Depending upon the algorithm, using the histogram is helpful
+	# check out mlp with and without histogram
+	# check out random forest with and without
+	histo = rgbHisto.read_describe(imagePath)
+	features.extend(histo.tolist())
+
 	data.append(features)
 
 	# extract the class label from the file path and update the
