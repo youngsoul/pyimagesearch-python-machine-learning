@@ -32,6 +32,7 @@ def extract_color_stats(image):
     # return our set of features
     return features
 
+
 """
 --dataset /Users/patrickryan/Development/python/mygithub/pyimagesearch-python-machine-learning/3scenes
 
@@ -56,6 +57,8 @@ models = {
     "svm": SVC(kernel="linear"),
     "decision_tree": DecisionTreeClassifier(),
     "random_forest": RandomForestClassifier(n_estimators=100, criterion='gini', min_samples_leaf=4),
+    "mlp2": MLPClassifier(hidden_layer_sizes=(128,), max_iter=500, alpha=0.0001,
+                          solver='adam', verbose=10, tol=0.000000001),
     "mlp": MLPClassifier()
 }
 
@@ -83,7 +86,6 @@ for imagePath in imagePaths:
     cv2_features = rgbHisto.get_features(imagePath)
     data.append(cv2_features)
 
-
     # extract the class label from the file path and update the
     # labels list
     label = imagePath.split(os.path.sep)[-2]
@@ -102,20 +104,33 @@ labels = le.fit_transform(labels)
                                                   test_size=0.25)
 
 model_name = args["model"]
-# train the model
-print("[INFO] using '{}' model".format(args["model"]))
-model = models[model_name]
-model.fit(trainX, trainY)
 
-print(f'Model: \n {model}')
 
-# make predictions on our data and show a classification report
-print("[INFO] evaluating...")
-predictions = model.predict(testX)
-accuracy = accuracy_score(testY, predictions)
-class_report = classification_report(testY, predictions,
-                                     target_names=le.classes_)
+def run_model_by_name(model_name):
+    # train the model
+    print("[INFO] using '{}' model".format(args["model"]))
+    model = models[model_name]
+    model.fit(trainX, trainY)
+    print(f'Model: \n {model}')
+    # make predictions on our data and show a classification report
+    print("[INFO] evaluating...")
+    predictions = model.predict(testX)
+    accuracy = accuracy_score(testY, predictions)
+    class_report = classification_report(testY, predictions,
+                                         target_names=le.classes_)
+    print(f'Model: {model_name}')
+    print(f'Accuracy: {accuracy}')
+    print(f'Classification Report:\n{class_report}')
+    return model_name, accuracy
 
-print(f'Model: {model_name}')
-print(f'Accuracy: {accuracy}')
-print(f'Classification Report:\n{class_report}')
+results = []
+if model_name == 'all':
+    for k, v in models.items():
+        results.append(run_model_by_name(k))
+else:
+    results.append(run_model_by_name(model_name))
+
+
+for r in results:
+    print(r)
+
