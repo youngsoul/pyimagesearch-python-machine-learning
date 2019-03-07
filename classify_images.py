@@ -14,10 +14,12 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from PIL import Image
-from imutils import paths
+from path_utils import list_images
 import numpy as np
 import argparse
 import os
+from sklearn.externals import joblib
+
 
 def extract_color_stats(image):
 	# split the input image into its respective RGB color channels
@@ -34,7 +36,7 @@ def extract_color_stats(image):
 ap = argparse.ArgumentParser()
 ap.add_argument("-d", "--dataset", type=str, default="3scenes",
 	help="path to directory containing the '3scenes' dataset")
-ap.add_argument("-m", "--model", type=str, default="knn",
+ap.add_argument("-m", "--model", type=str, default="all",
 	help="type of python machine learning model to use")
 args = vars(ap.parse_args())
 
@@ -54,9 +56,9 @@ models = {
 # grab all image paths in the input dataset directory, initialize our
 # list of extracted features and corresponding labels
 print("[INFO] extracting image features...")
-imagePaths = paths.list_images(args["dataset"])
+imagePaths = list_images(args["dataset"])
 data = []
-labels = []
+image_labels = []
 
 # loop over our input images
 for imagePath in imagePaths:
@@ -69,11 +71,18 @@ for imagePath in imagePaths:
 	# extract the class label from the file path and update the
 	# labels list
 	label = imagePath.split(os.path.sep)[-2]
-	labels.append(label)
+	image_labels.append(label)
 
 # encode the labels, converting them from strings to integers
 le = LabelEncoder()
-labels = le.fit_transform(labels)
+labels = le.fit_transform(image_labels)
+print(set(labels))
+print(set(image_labels))
+with open('./scene_labels.txt', 'w') as f:
+	for x,y in list(zip(list(set(labels)), list(set(image_labels)))):
+		f.write(f"{x},{y}")
+		f.write("\n")
+
 
 # perform a training and testing split, using 75% of the data for
 # training and 25% for evaluation
@@ -81,12 +90,29 @@ labels = le.fit_transform(labels)
 	test_size=0.25)
 
 # train the model
-print("[INFO] using '{}' model".format(args["model"]))
-model = models[args["model"]]
-model.fit(trainX, trainY)
+model_name = args["model"]
+if model_name != 'all':
+	print("[INFO] using '{}' model".format(args["model"]))
+	model = models[args["model"]]
+	model.fit(trainX, trainY)
 
-# make predictions on our data and show a classification report
-print("[INFO] evaluating...")
-predictions = model.predict(testX)
-print(classification_report(testY, predictions,
-	target_names=le.classes_))
+	# make predictions on our data and show a classification report
+	print("[INFO] evaluating...")
+	predictions = model.predict(testX)
+	print(classification_report(testY, predictions,
+		target_names=le.classes_))
+
+	joblib.dump(model, "image_classify_scikit_model.sav")
+
+else:
+	for k,v in models.items():
+		print("[INFO] using '{}' model".format(k))
+		model = v
+		model.fit(trainX, trainY)
+
+		# make predictions on our data and show a classification report
+		print("[INFO] evaluating...")
+		predictions = model.predict(testX)
+		print(classification_report(testY, predictions,
+									target_names=le.classes_))
+		print("-----------------------------------------")
