@@ -31,3 +31,11 @@ pip install --upgrade imutils
 - Options
 
 --dataset animals --model random_forest
+
+360 Coast Pictures
+328 forest Pictures
+260 Highway Pictures
+
+1001 Cats
+1001 Dogs
+1001 Pandas
