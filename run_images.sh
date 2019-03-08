@@ -1,0 +1,1 @@
+python classify_images.py --dataset 3scenes
