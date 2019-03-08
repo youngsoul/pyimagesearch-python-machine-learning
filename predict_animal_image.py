@@ -20,7 +20,7 @@ def extract_color_stats(image):
 
 def load_targets():
     targets = []
-    with open('./3scenes_scene_labels.txt', 'r') as f:
+    with open('./animals_scene_labels.txt', 'r') as f:
         line = f.readline().strip()
         while line:
             targets.append(line)
@@ -31,7 +31,7 @@ def load_targets():
 
 def predict_scene(imagePath):
     print(f'Predict for image: {imagePath}')
-    model = joblib.load('3scenes_image_classify_scikit_model.sav')
+    model = joblib.load('animals_image_classify_scikit_model.sav')
     features = rgbHisto.get_features(imagePath)
     prediction = model.predict([features])
 
@@ -42,13 +42,14 @@ def predict_scene(imagePath):
 
 if __name__ == '__main__':
     test_images = [
-        './3scenes_holdout/coast/coast_cdmc922.jpg',
-        './3scenes_holdout/coast/coast_n291061.jpg',
-        './3scenes_holdout/forest/forest_for15.jpg',
-        './3scenes_holdout/forest/forest_nat982.jpg',
-        './3scenes_holdout/highway/highway_art820.jpg',
-        './3scenes_holdout/highway/highway_urb537.jpg'
+        './animal_holdout/cats/cats_00843.jpg',
+        './animal_holdout/cats/cats_00997.jpg',
+        './animal_holdout/dogs/dogs_00102.jpg',
+        './animal_holdout/dogs/dogs_00163.jpg',
+        './animal_holdout/pandas/panda_00050.jpg',
+        './animal_holdout/pandas/panda_00755.jpg'
     ]
+
     for test_image in test_images:
         print("-----------------------------")
         predict_scene(test_image)
