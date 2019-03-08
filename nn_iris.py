@@ -7,7 +7,7 @@ from keras.layers.core import Dense
 from keras.optimizers import SGD
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, accuracy_score
 from sklearn.datasets import load_iris
 
 # load the Iris dataset and perform a training and testing split,
@@ -15,7 +15,7 @@ from sklearn.datasets import load_iris
 print("[INFO] loading data...")
 dataset = load_iris()
 (trainX, testX, trainY, testY) = train_test_split(dataset.data,
-	dataset.target, test_size=0.25)
+	dataset.target, test_size=0.25, random_state=32)
 
 # encode the labels as 1-hot vectors
 lb = LabelBinarizer()
