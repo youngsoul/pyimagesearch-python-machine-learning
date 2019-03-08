@@ -14,11 +14,12 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, accuracy_score
 from PIL import Image
-import paths
+from path_utils import list_images
 import numpy as np
 import argparse
 import os
 from rgbhistogram import RGBHistogram
+from sklearn.externals import joblib
 
 
 def extract_color_stats(image):
@@ -66,9 +67,9 @@ dataset = args["dataset"]
 # grab all image paths in the input dataset directory, initialize our
 # list of extracted features and corresponding labels
 print(f"[INFO] extracting image features from dataset: [{dataset}]...")
-imagePaths = paths.list_images(dataset)
+imagePaths = list_images(dataset)
 data = []
-labels = []
+image_labels = []
 
 # loop over our input images
 for imagePath in imagePaths:
@@ -89,14 +90,20 @@ for imagePath in imagePaths:
     # extract the class label from the file path and update the
     # labels list
     label = imagePath.split(os.path.sep)[-2]
-    labels.append(label)
+    image_labels.append(label)
 
 # when you get here
 # every row in the data array is
 
 # encode the labels, converting them from strings to integers
 le = LabelEncoder()
-labels = le.fit_transform(labels)
+labels = le.fit_transform(image_labels)
+print(set(labels))
+print(set(image_labels))
+with open('./scene_labels.txt', 'w') as f:
+    for x, y in list(zip(list(set(labels)), list(set(image_labels)))):
+        f.write(f"{x},{y}")
+        f.write("\n")
 
 # perform a training and testing split, using 75% of the data for
 # training and 25% for evaluation
@@ -121,16 +128,18 @@ def run_model_by_name(model_name):
     print(f'Model: {model_name}')
     print(f'Accuracy: {accuracy}')
     print(f'Classification Report:\n{class_report}')
-    return model_name, accuracy
+    return model_name, accuracy, model
+
 
 results = []
 if model_name == 'all':
     for k, v in models.items():
         results.append(run_model_by_name(k))
+        for r in results:
+            print(r)
+
 else:
-    results.append(run_model_by_name(model_name))
-
-
-for r in results:
-    print(r)
+    model_name, accuracy, model = run_model_by_name(model_name)
+    print(model_name, accuracy)
+    joblib.dump(model, f"{dataset}_image_classify_scikit_model.sav")
 

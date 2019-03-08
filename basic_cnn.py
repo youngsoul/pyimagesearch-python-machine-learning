@@ -13,7 +13,7 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from PIL import Image
-import paths
+from path_utils import list_images
 import numpy as np
 import argparse
 import os
@@ -27,7 +27,7 @@ args = vars(ap.parse_args())
 # grab all image paths in the input dataset directory, then initialize
 # our list of images and corresponding class labels
 print("[INFO] loading images...")
-imagePaths = paths.list_images(args["dataset"])
+imagePaths = list_images(args["dataset"])
 data = []
 labels = []
 
