@@ -161,19 +161,22 @@ if __name__ == '__main__':
 
         print("Best Model")
         print(sorted_models[0])
+        best_model = sorted_models[0][2]
+        best_model.fit(X,y)
         saved_model_name = f"{dataset_dir_name}_image_classify_scikit_model.sav"
-        with open(f'./{dataset_dir_name}_{sorted_models[0][0]}_best_model_details.txt', 'w') as f:
+        with open(f'./{dataset_dir_name}_best_model_details.txt', 'w') as f:
             f.write(saved_model_name)
             f.write("\n")
             f.write(f"{sorted_models[0]}")
 
         print(f"Saving model to: {saved_model_name}")
-        joblib.dump(sorted_models[0][2], saved_model_name)
+        joblib.dump(best_model, saved_model_name)
 
 
     else:
         model_name, accuracy, model = cross_validate_model(model_name, X, y_transformed) #run_model_by_name(model_name, trainX, trainY, testX, testY, y_classes)
         print(model_name, accuracy)
+        model.fit(X,y)
         saved_model_name = f"{dataset_dir_name}_image_classify_scikit_model.sav"
         joblib.dump(model, saved_model_name)
         print(f"Saving model to: {saved_model_name}")

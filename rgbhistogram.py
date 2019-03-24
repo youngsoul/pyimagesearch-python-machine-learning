@@ -15,8 +15,9 @@ class RGBHistogram:
     def get_features(self, imagePath):
         img = cv2.imread(imagePath)
         features = []
-        features.extend(self.extract_color_stats(img))
-        features.extend(self.describe(img).tolist())
+        if img is not None:
+            features.extend(self.extract_color_stats(img))
+            features.extend(self.describe(img).tolist())
 
         return features
 
