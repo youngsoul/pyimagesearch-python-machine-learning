@@ -29,7 +29,7 @@ def load_targets():
     return targets
 
 
-def predict_scene(imagePath):
+def predict_animal(imagePath):
     print(f'Predict for image: {imagePath}')
     model = joblib.load('animals_image_classify_scikit_model.sav')
     features = rgbHisto.get_features(imagePath)
@@ -52,4 +52,4 @@ if __name__ == '__main__':
 
     for test_image in test_images:
         print("-----------------------------")
-        predict_scene(test_image)
+        predict_animal(test_image)
