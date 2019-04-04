@@ -38,10 +38,10 @@ def predict_image(model, imagePath):
 
 if __name__ == '__main__':
     # cats, dogs, panda
-    predicted_class = 'dogs'
+    predicted_class = 'cats'
     cat_path = "/Volumes/MacBackup/CATS_DOGS_ORIGINAL/test/CAT"
     dog_path = "/Volumes/MacBackup/CATS_DOGS_ORIGINAL/test/DOG"
-    image_path = dog_path
+    image_path = cat_path
 
 
     test_images = [
