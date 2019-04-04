@@ -1,6 +1,4 @@
 from sklearn.externals import joblib
-from PIL import Image
-import numpy as np
 from rgbhistogram import RGBHistogram
 
 rgbHisto = RGBHistogram([8, 8, 8])
@@ -30,6 +28,12 @@ def predict_animal(imagePath):
 
 if __name__ == '__main__':
     test_images = [
+        './test_images/cat_9756.jpg',
+        './test_images/cat_9829.jpg',
+        './test_images/cat_9999.jpg',
+        './test_images/dog_9744.jpg',
+        './test_images/dog_9751.jpg',
+        './test_images/dog_9969.jpg',
         './animal_holdout/cats/cats_00843.jpg',
         './animal_holdout/cats/cats_00997.jpg',
         './animal_holdout/dogs/dogs_00102.jpg',
