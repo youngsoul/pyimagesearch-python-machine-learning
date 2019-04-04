@@ -146,7 +146,7 @@ if __name__ == '__main__':
     y_transformed, y_classes = one_hot_encode_targets(y, dataset_dir_name)
 
     X = pd.DataFrame(X)
-    y_transformed = pd.DataFrame(y_transformed)
+    
     # perform a training and testing split, using 75% of the data for
     # training and 25% for evaluation
     (trainX, testX, trainY, testY) = train_test_split(X, y_transformed,
