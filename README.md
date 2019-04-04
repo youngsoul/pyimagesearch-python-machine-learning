@@ -39,3 +39,10 @@ pip install --upgrade imutils
 1001 Cats
 1001 Dogs
 1001 Pandas
+
+### Create saved model
+python create_image_classification_model.py --dataset animals --model all
+
+python create_image_classification_model.py --dataset 3scenes --model all
+
+

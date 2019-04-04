@@ -1,6 +1,7 @@
 # USAGE
 # python classify_images.py
 # python classify_images.py --model svm
+# python classify_images.pu --dataset animals --model all
 
 # import the necessary packages
 from sklearn.neighbors import KNeighborsClassifier
@@ -39,7 +40,9 @@ def extract_color_stats(image):
 
 
 """
---dataset /Users/patrickryan/Development/python/mygithub/pyimagesearch-python-machine-learning/3scenes
+/Users/patrickryan/Development/python/mygithub/pyimagesearch-python-machine-learning/3scenes
+--dataset 3scenes
+--dataset animals
 
 """
 # construct the argument parser and parse the arguments
@@ -94,6 +97,7 @@ for imagePath in imagePaths:
 
     # extract the class label from the file path and update the
     # labels list
+    # label is the directory name where the images reside.  the name of the image file does not matter
     label = imagePath.split(os.path.sep)[-2]
     image_labels.append(label)
 
