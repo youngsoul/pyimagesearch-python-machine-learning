@@ -54,12 +54,16 @@ if __name__ == '__main__':
     model = joblib.load('animals_image_classify_scikit_model.sav')
 
     true_count = 0
+    total_count = 0
     for test_image in test_images:
+        total_count += 1
         print("-----------------------------")
         prediction = predict_image(model, str(test_image))
         if prediction == predicted_class:
             true_count += 1
 
+    print(f"Total Count: {total_count}")
+    print(f"True Count: {true_count}")
     print(f"Accuracy = {true_count/len(test_images)}")
 
 
