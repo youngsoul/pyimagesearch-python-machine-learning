@@ -29,8 +29,13 @@ class RGBHistogram:
         stats = [np.mean(R), np.mean(G), np.mean(B), np.std(R),
                     np.std(G), np.std(B)]
 
+        # perform a min/max scaling on the mean and standard deviation since we are
+        # normalizing the histogram bins as well.
+        np_stats = np.array(stats)
+        normal_np_stats = np.interp(np_stats, (np_stats.min(), np_stats.max()), (0, +1))
+
         # return our set of features
-        return stats
+        return normal_np_stats
 
     def describe(self, image, mask=None):
         hist = cv2.calcHist([image], [0, 1, 2],
