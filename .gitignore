@@ -194,3 +194,4 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+/best_image_classification_model.mdl
