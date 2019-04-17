@@ -66,6 +66,19 @@ weighted avg       0.66      0.64      0.62       749
 
 ```
 
+With a Feedforward NN (by running  pyimagesearch/nn/keras_animals.py) the model results were:
+```text
+[INFO] evaluating network...
+              precision    recall  f1-score   support
+        cats       0.57      0.31      0.40       236
+        dogs       0.52      0.71      0.60       263
+      pandas       0.80      0.84      0.82       250
+   micro avg       0.62      0.62      0.62       749
+   macro avg       0.63      0.62      0.60       749
+weighted avg       0.63      0.62      0.61       749
+
+```
+
 Where the RandomForest performed as:
 
 ```text
