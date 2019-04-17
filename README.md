@@ -46,3 +46,35 @@ python create_image_classification_model.py --dataset animals --model all
 python create_image_classification_model.py --dataset 3scenes --model all
 
 
+## DeepLearning Keras CNN
+
+In pyimagesearch/nn/conv run shallownet_animals.py.
+
+This is an implementation of a very simple CNN learning model.
+
+Interestingly, when run on the animals dataset the CNN model does worse than randomforest using just color attributes.
+
+```text
+[INFO] evaluating network...
+              precision    recall  f1-score   support
+         cat       0.63      0.26      0.37       236
+         dog       0.52      0.79      0.62       263
+       panda       0.85      0.85      0.85       250
+   micro avg       0.64      0.64      0.64       749
+   macro avg       0.67      0.63      0.61       749
+weighted avg       0.66      0.64      0.62       749
+
+```
+
+Where the RandomForest performed as:
+
+```text
+animals_image_classify_scikit_model.sav
+('random_forest', 0.6916917922948074, RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
+            max_depth=None, max_features='auto', max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=4, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, n_estimators=100, n_jobs=None,
+            oob_score=False, random_state=None, verbose=0,
+            warm_start=False))
+```
