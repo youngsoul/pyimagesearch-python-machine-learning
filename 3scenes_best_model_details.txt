@@ -1,0 +1,2 @@
+3scenes_image_classify_scikit_model.sav
+('svm', 0.8636704972124246, SVC(kernel='linear'))

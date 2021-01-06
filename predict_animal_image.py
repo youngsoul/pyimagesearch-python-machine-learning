@@ -1,4 +1,4 @@
-from sklearn.externals import joblib
+import joblib
 from rgbhistogram import RGBHistogram
 
 rgbHisto = RGBHistogram([8, 8, 8])
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         './animal_holdout/dogs/dogs_00102.jpg',
         './animal_holdout/dogs/dogs_00163.jpg',
         './animal_holdout/pandas/panda_00050.jpg',
-        './animal_holdout/pandas/panda_00755.jpg'
+        './animal_holdout/pandas/panda_00755.jpg',
     ]
 
     for test_image in test_images:

@@ -19,8 +19,8 @@ from path_utils import list_images
 import argparse
 import os
 from rgbhistogram import RGBHistogram
-from sklearn.externals import joblib
-from xgboost import XGBClassifier
+import joblib
+# from xgboost import XGBClassifier
 import pandas as pd
 
 
@@ -30,16 +30,16 @@ rgbHisto = RGBHistogram([8, 8, 8])
 # to the dictionary is the name of the model (supplied via command
 # line argument) and the value is the model itself
 models = {
-    "knn": KNeighborsClassifier(n_neighbors=1),
+    "knn": KNeighborsClassifier(n_neighbors=2),
     "naive_bayes": GaussianNB(),
-    "logit": LogisticRegression(solver="lbfgs", multi_class="auto"),
+    # "logit": LogisticRegression(solver="lbfgs", multi_class="auto"),
     "svm": SVC(kernel="linear"),
     "decision_tree": DecisionTreeClassifier(),
-    "random_forest": RandomForestClassifier(n_estimators=100, criterion='gini', min_samples_leaf=4),
-    "mlp2": MLPClassifier(hidden_layer_sizes=(128,), max_iter=500, alpha=0.0001,
-                          solver='adam', verbose=10, tol=0.000000001),
-    "mlp": MLPClassifier(),
-    "xgboost": XGBClassifier(learning_rate=0.01)
+    "random_forest": RandomForestClassifier(n_estimators=300, criterion='gini', min_samples_leaf=1),
+    # "mlp2": MLPClassifier(hidden_layer_sizes=(128,), max_iter=500, alpha=0.0001,
+    #                       solver='adam', verbose=10, tol=0.000000001),
+    # "mlp": MLPClassifier(),
+    # "xgboost": XGBClassifier(learning_rate=0.01)
 
 }
 
@@ -188,5 +188,4 @@ if __name__ == '__main__':
         joblib.dump(model, saved_model_name)
         print(f"Saving model to: {saved_model_name}")
         with open(f'./{dataset_dir_name}_{model_name}_model_details.txt', 'w') as f:
-            f.write(model)
-
+            f.write(f"{model}")

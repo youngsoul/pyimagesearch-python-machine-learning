@@ -1,5 +1,4 @@
-from sklearn.externals import joblib
-from PIL import Image
+import joblib
 import numpy as np
 from rgbhistogram import RGBHistogram
 
